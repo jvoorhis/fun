@@ -1,5 +1,18 @@
 require 'monad'
 
+module MonadState
+
+  def self.included(mod)
+    mod.extend(ClassMethods)
+  end
+  
+  module ClassMethods
+    def update(&fn)
+      get.bind { |s| put(fn.call(s)) }
+    end
+  end
+end
+
 class State
   include Monad
   
@@ -10,11 +23,11 @@ class State
   def call(*args)
     @fn.call(*args)
   end
+  
   alias run call
   
   def self.return(val, &fn)
-    m = new { |s| [val, s] }
-    if fn then m.bind(&fn) else m end
+    new { |s| [val, s] }
   end
   
   def bind(&block)
@@ -24,17 +37,53 @@ class State
     end
   end
   
+  include MonadState
+  
   def self.get(&fn)
-    m = new { |s| [s, s] }
-    if fn then m.bind(&fn) else m end
+    new { |s| [s, s] }
   end
   
   def self.put(s, &fn)
-    m = new { |_| [nil, s] }
-    if fn then m.bind(&fn) else m end
+    new { |_| [nil, s] }
   end
-  
-  def self.update(&fn)
-    get { |s| put(fn.call(s)) }
+end
+
+def StateT(inner)
+  Class.new do
+    @@inner = inner
+    
+    def initialize(&fn)
+      @fn = fn
+    end
+    
+    def call(*args)
+      @fn.call(*args)
+    end
+    
+    alias run call
+    
+    include Monad
+    
+    def self.return(val)
+      new { |s| @@inner.return([val, s]) }
+    end
+    
+    def bind(&fn)
+      self.class.new do |s|
+        self.call(s).bind do |(v,s1)|
+          fn.call(v).call(s1)
+        end
+      end
+    end
+    
+    include MonadState
+    
+    def self.get(&fn)
+      new { |s| @@inner.return([s, s]) }
+    end
+    
+    def self.put(s, &fn)
+      new { |_| @@inner.return([nil, s]) }
+    end    
   end
 end
