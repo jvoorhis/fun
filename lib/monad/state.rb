@@ -76,6 +76,14 @@ def StateT(inner)
       end
     end
     
+    def self.lift(c)
+      new do |s|
+        c.bind do |x|
+          c.class.return([x,s])
+        end
+      end
+    end
+    
     include MonadState
     
     def self.get(&fn)
@@ -84,6 +92,6 @@ def StateT(inner)
     
     def self.put(s, &fn)
       new { |_| @@inner.return([nil, s]) }
-    end    
+    end
   end
 end
