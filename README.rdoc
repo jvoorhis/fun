@@ -1,0 +1,7 @@
+= Fun
+
+Fun is a functional programming library for Ruby. The library contains abstract
+data types and functions that are usually found in functional programming
+languages as Haskell, ML or Scheme. While Ruby's syntax is not ideally suited
+for the use of these techniques, its flexibility as a multiparadigmatic
+programming language certainly makes this possible. 

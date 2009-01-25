@@ -15,6 +15,20 @@ module Monad
   end
   
   module ClassMethods
+    def sequence(ms)
+      ms.inject( self.return([]) ) do |m_, m|
+        m.bind do |x|
+          m_.bind do |xs|
+            self.return( [x] + xs )
+          end
+        end
+      end
+    end
+    
+    def mapM(as, &fn)
+      sequence( as.map(&fn) )
+    end
+    
     def liftM(*ms, &block)
       if ms.size != block.arity && block.arity != -1
         raise ArgumentError, "Given #{ms.size} args, and block of #{block.arity} args."
