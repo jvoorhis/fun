@@ -1,12 +1,17 @@
+2009-01-25  Jeremy Voorhis  <jvoorhis@gmail.com>
+	
+	* state.rb: Implemented StateT. Removed autobinding behavior – better
+	if we're explicit about these things.
+	
 2009-01-24  Jeremy Voorhis  <jvoorhis@gmail.com>
 	
         * monad.rb: Implemented Monad.sequence, .mapM
-
+	
 	* monad/array.rb: Implemented ArrayT – the Array monad transformer.
 	Supports MonadPlus.
 	
 2009-01-22  Jeremy Voorhis  <jvoorhis@gmail.com>
-
+	
         * Created project, moved related types into their own files.
 
 Copyright 2009 Jeremy Voorhis <jvoorhis@gmail.com>
