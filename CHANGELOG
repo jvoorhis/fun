@@ -1,5 +1,7 @@
 2009-01-25  Jeremy Voorhis  <jvoorhis@gmail.com>
-
+	
+	* reader.rb: Implemented ReaderT.
+	
 	* monoid.rb: Implemented Monoid for Proc.
 	
 	* writer.rb: Implemented WriterT.
