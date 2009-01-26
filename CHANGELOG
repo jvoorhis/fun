@@ -1,5 +1,7 @@
 2009-01-25  Jeremy Voorhis  <jvoorhis@gmail.com>
 	
+	* monad.rb: Monad#seq accepts a monad or a lambda of zero arity.
+	
 	* state.rb: Implemented StateT. Removed autobinding behavior – better
 	if we're explicit about these things.
 	

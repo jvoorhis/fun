@@ -8,9 +8,9 @@ module Monad
     def fmap(&fn)
       self.bind { |v| self.class.return(fn.call(v)) }
     end
-
-    def seq(&fn)
-      self.bind { |_| fn.call() }
+    
+    def seq(m = nil, &fn)
+      self.bind { |_| m.nil? ? fn.call() : m }
     end
   end
   
