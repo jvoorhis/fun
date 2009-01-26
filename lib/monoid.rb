@@ -20,7 +20,7 @@ end
 
 class String
   include Monoid
-
+  
   def self.mempty; "" end
   
   def mappend(str) self + str end
@@ -28,8 +28,20 @@ end
 
 class Hash
   include Monoid
-
+  
   def self.mempty; {} end
-
+  
   def mappend(hsh) merge(hsh) end
+end
+
+class Proc
+  include Monoid
+  
+  def self.mempty
+    fn = new { |x| fn }
+  end
+
+  def mappend(fn)
+    self.class.new { |x| self.call(x).mappend(fn.call(x)) }
+  end
 end
