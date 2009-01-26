@@ -49,6 +49,10 @@ def ArrayT(inner)
           @@inner.return(b.inject([]) { |out, arr| arr + out }) } }
     end
     
+    def self.lift(m)
+      new( m.bind { |a| m.class.return([a]) } )
+    end
+    
     include MonadPlus
     
     def self.mzero
